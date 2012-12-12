@@ -1,0 +1,9 @@
+*.tex
+*.o
+*.log
+*.dvi
+*.aux
+*.swp
+*.dat
+tags
+program
