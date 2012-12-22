@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include <Eigen/Dense>
 #include "calc.hpp"
-
+#include <stdexcept>
 using namespace Eigen;
 using namespace std;
 
@@ -11,7 +11,7 @@ frac_t calculate(vector<double> &original, int numDeg, int denDeg)
 	int count = original.size();
 	if(count < std::max(numDeg, denDeg) +2)
 	{
-		throw ("Not enough coefficients");
+		throw std::runtime_error("Not enough coefficients");
 	}
 	MatrixXd bs(numDeg+denDeg+1, denDeg );
 	for (int i = 0; i < numDeg+denDeg+1; i++) 

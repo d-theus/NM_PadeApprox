@@ -1,18 +1,22 @@
 SRC=main.cpp\
-    texport.cpp
+    texport.cpp\
+    calc.cpp
 
 OBJ=main.o\
+    calc.o\
     texport.o
 
 TGT=program
 
+FLG=-I /usr/include/eigen3/
+
 all:$(TGT)
 
 $(TGT):$(OBJ)
-	g++ -o $(TGT) $(OBJ)
+	g++ $(FLG) -o $(TGT) $(OBJ)
 
 $(OBJ):
-	g++ -c $(SRC)
+	g++ $(FLG) -c $(SRC) 
 
 clean:
 	rm *.o 

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdlib>
+#include <unistd.h>
 #include <fstream>
 #include <vector>
 #include "texport.hpp"
@@ -7,6 +8,10 @@
 
 using namespace std;
 
+struct MyException: public std::runtime_error
+{
+	MyException(const std::string& msg): std::runtime_error(msg) {}
+};
 
 int main(int argc, const char *argv[])
 {
@@ -33,10 +38,12 @@ int main(int argc, const char *argv[])
 		of << "\\end{document}";
 		of.close();
 		system("latex Approx.tex");
+		sleep(1);
+		system("okular Approx.dvi");
 	}
-	catch(string &message)
+	catch(std::exception& e)
 	{
-		cout<<message<<endl;
+		cout<<e.what()<<endl;
 	}
 
 	return 0;
