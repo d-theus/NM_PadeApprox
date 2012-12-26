@@ -28,6 +28,8 @@ void matrix_get(std::vector<std::vector<double> > &matrix)
 
 void triangulate_fw(std::vector<std::vector<double> > &matrix, std::vector<double> & right)
 {
+	if (matrix.size() != right.size())
+		throw Dimension_match_exception("Matrix and right-side vector dimensions doesn't match");
 	int N = matrix.size();
 	for (int i = 0; i < N; i++) 
 	{
@@ -36,13 +38,13 @@ void triangulate_fw(std::vector<std::vector<double> > &matrix, std::vector<doubl
 			if(matrix[i][i] < matrix[j][i])
 			{
 				swap (matrix[i], matrix[j]);
-				//swap (right[i],right[j]);
+				swap (right[i],right[j]);
 			}
 		}
 		double x0 = matrix[i][i];
 		for(double &el : matrix[i])
 			el /= x0;
-		//right[i] /= x0;
+		right[i] /= x0;
 		for (int j = i+1; j < N; j++) 
 		{
 			double xj0 = matrix[j][i];
@@ -50,12 +52,14 @@ void triangulate_fw(std::vector<std::vector<double> > &matrix, std::vector<doubl
 			{
 				matrix[j][k] -= xj0*matrix[i][k];
 			}
-			//right[j] -= xj0*right[i];
+			right[j] -= xj0*right[i];
 		}
 	}
 }
 void triangulate_bw(std::vector<std::vector<double> > &matrix, std::vector<double> & right)
 {
+	if (matrix.size() != right.size())
+		throw Dimension_match_exception("Matrix and right-side vector dimensions doesn't match");
 	int N = matrix.size();
 	for (int i = N-1; i >= 0; i--) 
 	{
@@ -67,7 +71,7 @@ void triangulate_bw(std::vector<std::vector<double> > &matrix, std::vector<doubl
 			{
 				matrix[j][k] -= xj0*matrix[i][k];
 			}
-			//right[j] -= xj0*right[i];
+			right[j] -= xj0*right[i];
 		}
 	}
 }
@@ -83,25 +87,12 @@ void matrix_print(const std::vector<std::vector<double> > matrix)
 }
 void matrix_ext_print(const std::vector<std::vector<double> > matrix,const std::vector<double> right)
 {
-	//if (matrix.size() != right.size())
-		//throw 
-	for(int i  = 0; i < matrix.size(); i++)
+	int r = 0;
+	for (vector<double> row : matrix)
 	{
-		for (int j = 0; j < matrix[i].size(); j++) 
-		{
-			cout<< matrix[i][j]<<"\t";
-		}
-		cout<<right[i]<<endl;
+		for(double val : row)
+			cout << val << "\t";
+		cout << right[r++];
+		cout << endl;
 	}
-}
-
-int main()
-{
-	vector<vector<double> > matrix;
-	vector<double> right;
-	matrix_get(matrix);
-	triangulate_fw(matrix, right);
-	triangulate_bw(matrix, right);
-	matrix_print(matrix);
-	return 0;
 }
