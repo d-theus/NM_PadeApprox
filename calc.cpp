@@ -1,48 +1,44 @@
 #include <iostream>
 #include <cstdlib>
-#include <Eigen/Dense>
-#include "calc.hpp"
 #include <stdexcept>
-using namespace Eigen;
+#include "calc.hpp"
+#include "gaussian_el.hpp"
 using namespace std;
 
-frac_t calculate(vector<double> &original, int numDeg, int denDeg)
+frac_t calculate(vector<double> &original, int L, int M)
 {
-	int count = original.size();
-	if(count < std::max(numDeg, denDeg) +2)
+	int N = L+M+1;
+	if(original.size() < L+M)
+		throw Coefficient_exception("Not enough coefficients in input file");
+
+	vector<vector<double> > matrix;
+	for (int i = 0; i < N; i++) 
 	{
-		throw std::runtime_error("Not enough coefficients");
+		matrix.push_back(*(new vector<double>(N)));
 	}
-	MatrixXd bs(numDeg+denDeg+1, denDeg );
-	for (int i = 0; i < numDeg+denDeg+1; i++) 
+	for (int i = 0; i < N; i++) 
 	{
-		for (int j = 1; j <= i && j <= denDeg; j++) 
+		if (i < L+1)
 		{
-			bs(i,j-1) = -original[i-j];
+			matrix[i][i] = 1;
+		}
+		for (int j = L+1; j < N && i > 0; j++) 
+		{
+			matrix[i][j] = -original[L+i -(j)];
 		}
 	}
-	MatrixXd mat(numDeg+denDeg+1, numDeg+denDeg+1);
-	mat.setZero();
-	mat.topLeftCorner(numDeg+1,numDeg+1).setIdentity();
-	mat.rightCols(denDeg) = bs;
-	cout<<mat<<endl;
-	VectorXd cs(numDeg+denDeg+1);
-	for (int i = 0; i < numDeg+denDeg+1; i++) 
-	{
-		cs(i) = original[i];
-	}
-	cout<<cs<<endl;
-	VectorXd sols(numDeg+denDeg+1);
-	sols= mat.inverse()*cs;
-	cout<<endl<<sols<<endl;
+	matrix_ext_print(matrix,original);
+	triangulate_fw(matrix, original);
+	triangulate_bw(matrix, original);
+	matrix_ext_print(matrix,original);
 	frac_t frac;
-	for (int i = 0; i < numDeg; i++) 
+	frac.denominator.push_back(1);
+	for (int i = 0; i < N; i++) 
 	{
-		frac.numerator.push_back(sols(i));
-	}
-	for (int i = 0; i < denDeg; i++) 
-	{
-		frac.denominator.push_back(sols(i));
+		if(i < L+1)
+			frac.numerator.push_back(original[i]);
+		else
+			frac.denominator.push_back(original[i]);
 	}
 	return frac;
 }

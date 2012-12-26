@@ -28,7 +28,7 @@ void matrix_get(std::vector<std::vector<double> > &matrix)
 
 void triangulate_fw(std::vector<std::vector<double> > &matrix, std::vector<double> & right)
 {
-	if (matrix.size() != right.size())
+	if (matrix.size() > right.size())
 		throw Dimension_match_exception("Matrix and right-side vector dimensions doesn't match");
 	int N = matrix.size();
 	for (int i = 0; i < N; i++) 
@@ -58,7 +58,7 @@ void triangulate_fw(std::vector<std::vector<double> > &matrix, std::vector<doubl
 }
 void triangulate_bw(std::vector<std::vector<double> > &matrix, std::vector<double> & right)
 {
-	if (matrix.size() != right.size())
+	if (matrix.size() > right.size())
 		throw Dimension_match_exception("Matrix and right-side vector dimensions doesn't match");
 	int N = matrix.size();
 	for (int i = N-1; i >= 0; i--) 

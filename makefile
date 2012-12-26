@@ -1,14 +1,16 @@
 SRC=main.cpp\
     texport.cpp\
-    calc.cpp
+    calc.cpp\
+    gaussian_el.cpp
 
 OBJ=main.o\
     calc.o\
-    texport.o
+    texport.o\
+    gaussian_el.o
 
 TGT=program
 
-FLG=-I /usr/include/eigen3/
+FLG=-std=c++11
 
 all:$(TGT)
 
@@ -19,8 +21,9 @@ $(OBJ):
 	g++ $(FLG) -c $(SRC) 
 
 clean:
-	rm *.o 
-	rm $(TGT) 
-	rm *.log 
-	rm *.tex
-	rm *.dvi
+	rm *.o|\
+	rm $(TGT)|\
+	rm *.log|\
+	rm *.tex|\
+	rm *.dvi|\
+	rm *.aux
