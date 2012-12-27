@@ -5,7 +5,9 @@
 
 using namespace std;
 
-void texport_polinome(const std::vector<double>&coefs, ofstream *of)
+void texport_polinome(
+		const std::vector<double>&coefs, 
+		ofstream *of)
 {
 	vector<double>::const_iterator it;
 	for (it = coefs.begin(); it != coefs.end(); it++) 
@@ -23,16 +25,25 @@ void texport_polinome(const std::vector<double>&coefs, ofstream *of)
 				if (deg != 1)
 				{
 					if (*it != 1)
-						*of << sgn << *it << "x^{" << deg << "}"; 
+						*of << sgn << *it 
+							<< "x^{" 
+							<< deg 
+							<< "}"; 
 					else
-						*of << sgn << "x^{" << deg << "}"; 
+						*of << sgn 
+							<< "x^{" 
+							<< deg 
+							<< "}"; 
 				}
 				else
 				{
 					if (*it != 1)
-						*of << sgn << *it << "x"; 
+						*of << sgn 
+							<< *it 
+							<< "x"; 
 					else
-						*of << sgn << "x"; 
+						*of << sgn 
+							<< "x"; 
 				}
 		}
 	}

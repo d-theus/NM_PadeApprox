@@ -1,28 +1,50 @@
 \documentclass[a4paper,14pt]{article}
+\usepackage{tikz}
 \usepackage[utf8]{inputenc}
 \usepackage[russian]{babel}
+\usepackage{amsmath}
+\usepackage{listings}
+\usetikzlibrary{calc, matrix}
 
 %{{{Command defns
 \newcommand{\definition}[2]
 {
 	\textbf{#1} -- #2\\
 }
+\newlength{\drop}
+\newcommand*{\titleMS}{\begingroup
+	\drop=0.1\textheight
+	\vspace*{\drop}
+	\centering
+	{\LARGE THE UNIVERSITY}\\[2\baselineskip]
+	{\LARGE\sffamily Conundrums:\\puzzles for the mind}\par
+	\vfill
+	{\LARGE Построение аппроксимирующей дробно-рациональной функции методом Паде}\par
+	\vspace{\drop}
+	{\large some remarks}\par
+	\vfill
+	{\large\bfseries The candidate}\par
+	\vspace*{\drop}
+\endgroup}
 %}}} 
+
 \begin{document}
-\section*{Построение аппроксимирующей дробно-рациональной функции методом Паде}
-\subsection{Понятия и определения} % (fold)
-\definition{Дробно-рациональная функция}{what it is}
-\definition{Аппроксимация}{what it is}
-\subsection{Постановка задачи} % (fold)
-Требуется написать программу, строющую по коэффициентам разложения 
-исходной функции в ряд Тейлора её приближение дробно-рациональнной функцией
-методом Паде. Коэффициенты разделены во входном файле пробелами.
-\subsection{Описание метода} % (fold)
+\titleMS
+\clearpage
+\section{Понятия и определения} % (fold)
+\definition{Рациональная функция}{дробь, числителем и знаменателем которой являются многочлены}
+\definition{Аппроксимация (приближение)}{научный метод, состоящий в замане одних объектов другими, 
+в том или ином смысле близкими к исходным, но более простыми}
+\section{Постановка задачи} % (fold)
+Требуется написать программу, строящую по коэффициентам разложения 
+исходной функции в ряд Маклорена её приближение рациональной функцией
+методом Паде и выводящую результат в формате $\TeX$.Коэффициенты разделены во входном файле пробелами.
+\section{Описание метода} % (fold)
 Исходная функция $f(x)$ представляется своим рядом Тейлора:\\
 \[
 	f(x) = c_0 + c_1x + c_2x^2 + ... + c_kx^k
 \]
-Приближающая функция с многочленом степени L в числителе и M в знаменателе обозначается 
+Приближающая функция с многочленом степени $L$ в числителе и $M$ в знаменателе обозначается 
 $R_{[L/M]}(x)$ и выглядит следующим образом: 
 \[
 	R_{[L/M]}(x) = 
@@ -35,19 +57,17 @@ $b_0$ в знаменателе можно заменить на 1 не нару
 	R_{[L/M]}(x) = 
 	\frac{a_0 + a_1x + a_2x^2 + ... + a_Lx^L}
 		{1 + b_1x + b_2x^2 + ... + b_Mx^M}
-\]
-Далее:
-\[
-	\begin{array}{l}
-		f(x) = R(x)\\
-		\frac{a_0 + a_1x + a_2x^2 + ... + a_Lx^L}
-		{1 + b_1x + b_2x^2 + ... + b_Mx^M} = 
-		c_0 + c_1x + c_2x^2 + ... + c_kx^k\\
-		a_0 + a_1x + a_2x^2 + ... + a_Lx^L = 
-		(c_0 + c_1x + c_2x^2 + ... + c_kx^k)
-		(1 + b_1x + b_2x^2 + ... + b_Mx^M)
-	\end{array}
-\]
+	\]
+	Далее:
+	\begin{gather*}
+			f(x) = R(x) \nonumber \\
+			\frac{a_0 + a_1x + a_2x^2 + ... + a_Lx^L}
+			{1 + b_1x + b_2x^2 + ... + b_Mx^M} = 
+			c_0 + c_1x + c_2x^2 + ... + c_kx^k \nonumber \\
+			a_0 + a_1x + a_2x^2 + ... + a_Lx^L = 
+			(c_0 + c_1x + c_2x^2 + ... + c_kx^k)
+			(1 + b_1x + b_2x^2 + ... + b_Mx^M) \nonumber
+	\end{gather*}
 
 последнее равенство эквивалентно системе уравнений:\\
 \[
@@ -84,9 +104,35 @@ $b_0$ в знаменателе можно заменить на 1 не нару
 	\]
 
 Системам соответствует матрица:
-\[
-\begin{matrix}
-	1&2&3&4&5&6\\1$2$3$4$5$6
-\end{matrix}
-\]
+$$
+	\begin{pmatrix}
+		1	&	0	&	0	&	0	&	\ldots	&	0	&	0	&	0	&	\ldots	&	0	\\
+		0	&	1	&	0	&	0	&	\ldots	&	0	&	-c_0	&	0	&	\ldots	&	0	\\
+		0	&	0	&	1	&	0	&	\ldots	&	0	&	-c_1	&	-c_0	&	\ldots	&	0	\\
+		\ldots	&	\ldots	&	\ldots	&	\ldots	&	\ldots	&	\ldots	&	\ldots	&	\ldots	&	\ldots	&	\ldots	\\
+		0	&	0	&	0	&	0	&	\ldots	&	1	&-c_{L-1}	&-c_{L-2}	&	\ldots	&-c_{L-M}	\\
+		0	&	0	&	0	&	0	&	\ldots	&	0	&	-c_L	&-c_{L-1}	&	\ldots	&-c_{L-M+1}	\\
+		\ldots	&	\ldots	&	\ldots	&	\ldots	&	\ldots	&	\ldots	&	\ldots	&	\ldots	&	\ldots	&	\ldots	\\
+		0	&	0	&	0	&	0	&	\ldots	&	0	&-c_{L+M-1}	&-c_{L+M-2}	&	\ldots	&-c_{L}	\\
+	\end{pmatrix}
+	$$
+Решив систему уравнений методом Гаусса, найдем коэффициенты многочленов.
+\clearpage
+\section{Программа}
+\textbf{main.cpp}
+\lstinputlisting[language = C++, firstline = 10]{../main.cpp}
+\clearpage
+
+\textbf{calc.cpp}
+\lstinputlisting[language = C++, firstline = 7]{../calc.cpp}
+\clearpage
+
+\textbf{gaussian\_el.cpp}
+\lstinputlisting[language = C++, firstline = 6, lastline=78]{../gaussian_el.cpp}
+\clearpage
+
+\textbf{texport.cpp}
+\lstinputlisting[language = C++, firstline = 6]{../texport.cpp}
+\clearpage
+
 \end{document}

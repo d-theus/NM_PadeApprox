@@ -3,9 +3,8 @@
 #include <algorithm>
 #include "gaussian_el.hpp"
 
-
 using namespace std;
-
+ 
 void matrix_get(std::vector<std::vector<double> > &matrix)
 {
 	int N;
@@ -26,10 +25,13 @@ void matrix_get(std::vector<std::vector<double> > &matrix)
 	matrix_print(matrix);
 }
 
-void triangulate_fw(std::vector<std::vector<double> > &matrix, std::vector<double> & right)
+void triangulate_fw(
+		std::vector<std::vector<double> > &matrix, 
+		std::vector<double> & right)
 {
 	if (matrix.size() > right.size())
-		throw Dimension_match_exception("Matrix and right-side vector dimensions doesn't match");
+		throw Dimension_match_exception(
+				"Matrix and right-side vector dimensions doesn't match");
 	int N = matrix.size();
 	for (int i = 0; i < N; i++) 
 	{
@@ -56,10 +58,14 @@ void triangulate_fw(std::vector<std::vector<double> > &matrix, std::vector<doubl
 		}
 	}
 }
-void triangulate_bw(std::vector<std::vector<double> > &matrix, std::vector<double> & right)
+void triangulate_bw(
+		std::vector<std::vector<double> > &matrix, 
+		std::vector<double> & right)
 {
 	if (matrix.size() > right.size())
-		throw Dimension_match_exception("Matrix and right-side vector dimensions doesn't match");
+		throw Dimension_match_exception(
+				"Matrix and right-side\
+				vector dimensions doesn't match");
 	int N = matrix.size();
 	for (int i = N-1; i >= 0; i--) 
 	{
@@ -85,7 +91,9 @@ void matrix_print(const std::vector<std::vector<double> > matrix)
 		cout << endl;
 	}
 }
-void matrix_ext_print(const std::vector<std::vector<double> > matrix,const std::vector<double> right)
+void matrix_ext_print(
+		const std::vector<std::vector<double> > matrix,
+		const std::vector<double> right)
 {
 	int r = 0;
 	for (vector<double> row : matrix)

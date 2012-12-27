@@ -9,7 +9,6 @@
 #include "gaussian_el.hpp"
 
 using namespace std;
-
 int main(int argc, const char *argv[])
 {
 	vector<double> num, denom;
