@@ -24,6 +24,7 @@ int main(int argc, const char *argv[])
 	if (original.size() < 1)
 	{
 		cout << "There is nothing to read from file "<< endl;
+		return 1;
 	}
 	cout << "Ok, input file readable"<<endl;
 	cout << "Enter numerator degree"<<endl;
@@ -35,7 +36,7 @@ int main(int argc, const char *argv[])
 	{
 		frac_t res = calculate(original, L,M);
 		ofstream of("Approx.tex");
-		of << "\\documentclass[a4paper, 14pt]{article}" << endl;
+		of << "\\documentclass[a4paper, 14pt]{report}" << endl;
 		of << "\\begin{document}"<< endl;
 		of << "\\centering" << endl;
 		of << "$";
@@ -43,9 +44,7 @@ int main(int argc, const char *argv[])
 		of << "$" << endl;
 		of << "\\end{document}";
 		of.close();
-		system("latex Approx.tex");
-		sleep(1);
-		system("okular Approx.dvi");
+		system("./comp_and_show.sh");
 	}
 	catch(std::exception& e)
 	{

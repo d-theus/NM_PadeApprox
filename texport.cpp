@@ -12,7 +12,6 @@ void texport_polinome(
 	vector<double>::const_iterator it;
 	for (it = coefs.begin(); it != coefs.end(); it++) 
 	{
-		cout << *it << endl;
 		int deg = it - coefs.begin();
 		char sgn = *it > 0 ? '+' :' ';
 		if (*it != 0)

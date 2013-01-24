@@ -22,17 +22,19 @@ frac_t calculate(vector<double> &original, int L, int M)
 	{
 		if (i < L+1)
 		{
+			//Диагональная	часть	,	соответствующая	коэф	.	числителя	
 			matrix[i][i] = 1;
 		}
 		for (int j = L+1; j < N && i > 0; j++) 
 		{
+			//Часть,	соответствующая	коэф	.	знаменателя
 			matrix[i][j] = -original[L+i -(j)];
 		}
 	}
 	triangulate_fw(matrix, original);
 	triangulate_bw(matrix, original);
 	frac_t frac;
-	frac.denominator.push_back(1);
+	frac.denominator.push_back(1);//b0 = 1
 	for (int i = 0; i < N; i++) 
 	{
 		if(i < L+1)
