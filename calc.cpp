@@ -16,7 +16,7 @@ frac_t calculate(vector<double> &original, int L, int M)
 	vector<vector<double> > matrix;
 	for (int i = 0; i < N; i++) 
 	{
-		matrix.push_back(*(new vector<double>(N)));
+		matrix.push_back(vector<double>(N));
 	}
 	for (int i = 0; i < N; i++) 
 	{
